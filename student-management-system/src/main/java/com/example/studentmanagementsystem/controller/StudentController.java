@@ -41,4 +41,24 @@ public class StudentController {
         return  "redirect:/students";
     }
 
+    @GetMapping("students/edit/{id}")
+    public String editStudents (@PathVariable Long id, Model m)
+    {
+        m.addAttribute("student",studentService.getStudentById(id));
+        return "edit";
+    }
+
+    @PostMapping("students/{id}")
+    public String updateStudent(@PathVariable Long id, @ModelAttribute("student") Student student, Model m){
+        //get student from database
+        Student existing= studentService.getStudentById(id);
+        existing.setFirstName(student.getFirstName());
+        existing.setLastName(student.getLastName());
+        existing.setEmail(student.getEmail());
+        //save the changes
+        studentService.update(existing);
+        return "redirect:/students";
+    }
+
+
 }
